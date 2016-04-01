@@ -92,8 +92,7 @@ class ahp():
                 if j == i: 
                     g_c[i][i] = 1
                 if j > i:
-                    testo = "Giudizio di" + x[i] + "rispetto a" +  x[j] + ": ..."    # cambia!!
-                                    # era "Giudizio di", x[i], "rispetto a", x[j], ": ..."
+                    testo = "Giudizio di", x[i], "rispetto a", x[j], ": ..." 
                     g_c[i][j] = input(testo)         # lo giudico
                     g_c[j][i] = 1./g_c[i][j]      # scrivo il valore trasposto
         print "g_c =", g_c
@@ -109,17 +108,6 @@ class ahp():
                 if j > i:
                     print '\t', crit[i], "\tcon respeto a \t", crit[j], "\t:", g_c[i][j]
         self.separatore()
-
-        # stampo la matrice di confronto dei criteri
-        intestazione = "\t\t\t" + crit[0]
-        for j in range(1, len(g_c[0])):          # per tutti i criteri
-            intestazione += "\t"+crit[j] 
-        print intestazione
-        for i in range(len(g_c)):
-            numeri = [str(g_c[i][j]) for j in range(len(g_c[0]))]
-            print '\t', crit[i],'\t', "\t\t".join(numeri)   #  join
-        self.separatore()
-
 
     def giudico_opzioni_in_base_ai_criteri(self, opz = ['o1', 'o2'], c = ['c1', 'c2', 'c3',] ):
         G = []
@@ -148,11 +136,19 @@ class ahp():
         # stampo la matrice dei giudizi
         intestazione = "\t\t" + crit[0]
         for j in range(1, len(G[0])):          # per tutti i criteri
-            intestazione += "\t"+crit[j] 
+            intestazione += crit[j] 
+
         print intestazione
+        
+             
         for i in range(len(G)):
-            numeri = [str(G[i][j]) for j in range(len(G[0]))]
+            # numeri = [G[i][j] for j in range(len(G[0])]
+            numeri = [str(G[i][j]) for j in [0,1,2,3]]
+            # numeri = ["\t"+str(G[i][j]) for j in [0,1,2,3]]
             print '\t', opz[i],'\t', "\t\t".join(numeri)   #  join
+
+        # '\t segun el criterio',crit[j],'\tcon un', G[i][j] 
+                # print frase
         self.separatore()
 
     def giudizio_da_matrice(self, C = [[1, 3, 9], [0.33, 1, 6], [1/9, 1/6, 1]]): 
@@ -196,8 +192,19 @@ class ahp():
         plt.axhline(y=max(ris))     # http://matplotlib.org/examples/pylab_examples/axhspan_demo.html
         plt.xticks(range(len(opz)), opz, rotation=45)  # http://matplotlib.org/examples/ticks_and_spines/ticklabels_demo_rotation.html
         
-        """
-        """
+        value_min = -0.5
+        value_max_x = len(opz)+0.5
+        axes = plt.gca()
+        axes.set_xlim([value_min, value_max_x])
+        axes.set_ylim([value_min, 10.5])
+        # set axes with an arrow
+        ax = plt.axes()
+        # ax.arrow(0, 0, 0.5, 0.5, head_width=0.05, head_length=0.1, fc='k', ec='k')
+        left,right = ax.get_xlim()
+        low,high = ax.get_ylim()
+        ax.arrow( left, 0, right -left, 0, length_includes_head = True, head_width = 0.15 )
+        ax.arrow( 0, low, 0, high-low, length_includes_head = True, head_width = 0.15 ) 
+        plt.grid()    # grid
         plt.show()
 
     def esecuzione(self, opz = ['o1', 'o2', 'o3',], 
@@ -256,7 +263,7 @@ if __name__ == "__main__":
     # a1.esecuzione() 
 
     a1.esecuzione(  opz = ['gato', 'perro', 'pez',], 
-                    crit = ['autonomia', 'economia', 'compañia', 'belleza'], 
+                    crit = ['autonomia', 'economicidad ', 'compañia', 'belleza'], 
                          G = [[10, 7, 7, 9], [5, 5, 10, 7], [10, 9, 2, 5]],   # [], #
                          g_c = [[    1,  8,  7, 9],                           # se voglio immetterle a mano  
                                 [0.125,  1,  7, 8], 
