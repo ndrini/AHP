@@ -15,6 +15,7 @@ import matplotlib.pyplot as plt
 import ahp
 
 a1 = ahp.ahp()
+HERE = os.path.dirname(os.path.realpath(__file__))
 
 class LearningCase(unittest.TestCase):
 
@@ -61,7 +62,28 @@ class LearningCase(unittest.TestCase):
         self.assertEqual(a1.normalizzazione(values, 0, 100, "Square Root")[2], 0.9)   
         self.assertEqual(a1.normalizzazione(values, 0, 100, "Square Root")[3], 1)   
         
-        pass   
+
+    def test_read_external_file(self):
+        """ Read en external data file """
+        # self.assertEqual(a1.giudizio_da_matrice([[1, 1., 1], [1, 1, 1], [1, 1, 1]])[2, 0], 1./3)
+        # self.assertEqual(a1.giudizio_da_matrice([[1, 1, 1], [1, 1, 1], [1, 1, 1]])[2, 0], 1./3)
+        # a1.esecuzione(  ])
+
+        # parametri  
+        dd1 = a1.risultato( opz = ['gato', 'perro', 'pez',],
+                             c = ['autonomia', 'economicidad ', 'compañia', 'belleza'], 
+                            G = [[10, 7, 7, 9], [5, 5, 10, 7], [10, 9, 2, 5]], 
+                            C = [[1,  8,  7, 9], [0.125,  1,  7, 8], [ 0.14,.11,  1, 7], [0.111,.12,.11 , 1]] )
+
+        self.assertEqual(dd1['gato'],  8.531705970502406)
+
+
+        # read parameters from file 
+        opz, c, G , C = a1.inp_from_file("pet.txt")
+        dd2 = a1.risultato( opz, c, G, C )
+        self.assertEqual(dd2['gato'],  8.531705970502406)
+
+
 
 def main():
     unittest.main()
@@ -69,6 +91,6 @@ def main():
 # Esecuzione ========================================
 if __name__ == "__main__":
     
-    print "ciao"
+    print "Hi"
     main()
-    print "arrivederci"
+    print "Text not shown"

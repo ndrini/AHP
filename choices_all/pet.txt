@@ -1,0 +1,4 @@
+opz :  gato, perro , pez  
+crit: autonomia, economicidad  , compania, belleza 
+Giud: [[10, 7, 7, 9], [5, 5, 10, 7], [10, 9, 2, 5]]
+g_c : [[1,  8,  7, 9],      [0.125,  1,  7, 8],        [ 0.14,.11,  1, 7],       [0.111,.12,.11 , 1]]

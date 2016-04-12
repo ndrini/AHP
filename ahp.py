@@ -14,6 +14,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 # import ML
 
+HERE = os.path.dirname(os.path.realpath(__file__))
+
 class ahp():
 
     def input(self, testo = "Scrivi l'input\n»"):
@@ -29,6 +31,46 @@ class ahp():
     def stop(self):
         raw_input("»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»\n\n")
         pass
+
+    def inp_from_file(self, nombre):
+        variabili = []
+
+        
+        with open(  HERE+"/choices_all/"+ nombre, 'r') as data:
+            # arts[2].strip(" ")
+            lines = [line for line in data.readlines()]  
+            # print lines        
+            for l in lines:
+                if l[:5] == "opz :": # or "crit:":
+                    lin = l[5:]
+                    # print lin
+                    # linea = lin.split(',')
+                    # variabili.append([li.strip() for li in linea])
+                    variabili.append([li.strip() for li in lin.split(',')])
+
+                if l[:5] == "crit:":
+                    lin = l[5:]
+                    variabili.append([li.strip() for li in lin.split(',')])
+                    # print lin
+                    # linea = lin.strip()
+                    # variabili.append(linea.split(','))
+
+                    # variabili.append( 
+                    # ['autonomia', 'economicidad ', 'compania', 'belleza'])
+
+
+
+                if l[:5] == "Giud:":  
+                     variabili.append( 
+                     [[10, 7, 7, 9], [5, 5, 10, 7], [10, 9, 2, 5]], )
+
+                if l[:5] == "g_c :":
+            #     g_c : [[1,  8,  7, 9],      [0.125,  1,  7, 8],        [ 0.14,.11,  1, 7],       [0.111,.12,.11 , 1]]
+                    variabili.append( [[1,  8,  7, 9],  [0.125,  1,  7, 8], [0.14,.11,  1, 7], [0.111,.12,.11 , 1]])
+        # print "lunghezza variabili = ", len(variabili)
+        print variabili
+        return variabili
+
 
     def equiparo_lunghezze(self, lista):
         """max(mylist, key=len)"""
@@ -161,51 +203,57 @@ class ahp():
 
 
     def risultato(self, opz = ['o1', 'o2'], c = ['c1', 'c2', 'c3',], \
-        G = [[5, 8, 2], [1, 9, 3]], C = [[1, 3, 9], [0.33, 1, 6], [1/9, 1/6, 1]]):
+        G = [[5, 8, 2], [1, 9, 3]], C = [[1, 3, 9], [0.33, 1, 6], [1/9, 1/6, 1]], 
+        grafico = "no", verbose = False):
         """ G i giudizi delle opzioni rispetto ai criteri
             C la matrice di confronto dei criteri  
                 a. ottengo i pesi normalizzati dei criteri g_c
                 b. moltiplico il giudizio G (normalizzato) per g_c
                 c. stampo il risultato  
         """
-        print "El resultado de la elaboracion ha sido:"
+        if verbose:  
+            print "El resultado de la elaboracion ha sido:"
         g_c = self.giudizio_da_matrice(C)
 
         ris = []        # serve per il grafico
 
         R = G * g_c    # {2 · 3} {3·1}      = {2·1}
         for j in range(len(opz)):
-            print "\tLa alternativa ", opz[j], "\ttiene judicio global de", "{:6.4f}".format(float(R[[j], :])) 
+            if verbose:  
+                print "\tLa alternativa ", opz[j], "\ttiene judicio global de", "{:6.4f}".format(float(R[[j], :])) 
             
             # ris.append([opz[j], float(R[[j], :]) )
             ris.append(float(R[[j], :]) )
-        self.separatore()
-        print "La alternativa mejor ha resultado", opz[ris.index(max(ris))], \
+        # self.separatore()
+        if verbose:  
+            print "La alternativa mejor ha resultado", opz[ris.index(max(ris))], \
                "con un judicio de ", "{:6.4f}".format(max(ris)), ".\n\n"
         
-        
-        plt.bar(range(len(opz)), ris)
-        plt.ylim(0,1.2*max(ris))
-        plt.title('Histograma del judicio con AHP')
-        plt.xlabel('Alternativas')
-        plt.ylabel('Evaluacion')    # si pianta con 'Evaluación'
-        plt.axhline(y=max(ris))     # http://matplotlib.org/examples/pylab_examples/axhspan_demo.html
-        plt.xticks(range(len(opz)), opz, rotation=45)  # http://matplotlib.org/examples/ticks_and_spines/ticklabels_demo_rotation.html
-        
-        value_min = -0.5
-        value_max_x = len(opz)+0.5
-        axes = plt.gca()
-        axes.set_xlim([value_min, value_max_x])
-        axes.set_ylim([value_min, 10.5])
-        # set axes with an arrow
-        ax = plt.axes()
-        # ax.arrow(0, 0, 0.5, 0.5, head_width=0.05, head_length=0.1, fc='k', ec='k')
-        left,right = ax.get_xlim()
-        low,high = ax.get_ylim()
-        ax.arrow( left, 0, right -left, 0, length_includes_head = True, head_width = 0.15 )
-        ax.arrow( 0, low, 0, high-low, length_includes_head = True, head_width = 0.15 ) 
-        plt.grid()    # grid
-        plt.show()
+        if grafico == "yes":
+            plt.bar(range(len(opz)), ris)
+            plt.ylim(0,1.2*max(ris))
+            plt.title('Histograma del judicio con AHP')
+            plt.xlabel('Alternativas')
+            plt.ylabel('Evaluacion')    # si pianta con 'Evaluación'
+            plt.axhline(y=max(ris))     # http://matplotlib.org/examples/pylab_examples/axhspan_demo.html
+            plt.xticks(range(len(opz)), opz, rotation=45)  # http://matplotlib.org/examples/ticks_and_spines/ticklabels_demo_rotation.html
+            
+            value_min = -0.5
+            value_max_x = len(opz)+0.5
+            value_max_y = 10.5
+            axes = plt.gca()             # gca stands for 'get current axis'
+            axes.set_xlim([value_min, value_max_x])
+            axes.set_ylim([value_min, value_max_y])
+            plt.annotate(s='', xytext=(value_min, 0), xy=(value_max_x, 0), arrowprops=dict(arrowstyle='->'))
+            plt.annotate(s='', xytext=(0,value_min), xy=(0,value_max_y), arrowprops=dict(arrowstyle='->'))
+            plt.grid()    # grid
+            plt.show()
+
+        #  extract the result as a dictionay -- estraggo il risultato  
+        opz_values = dict(zip(opz, ris))
+        if verbose:  
+            print opz_values
+        return opz_values
 
     def esecuzione(self, opz = ['o1', 'o2', 'o3',], 
                          crit = ['c1', 'c2', 'c3', 'c4', ], 
@@ -213,7 +261,8 @@ class ahp():
                          g_c = [[  1, 10,  5, 2], 
                                 [0.1,  1, 10, 4], 
                                 [0.2, .1,  1, 5], 
-                                [0.5,.25, .2, 1]]):          # permetto di eseguire lo script 
+                                [0.5,.25, .2, 1]],
+                    grafico = "no"):          # permetto di eseguire lo script 
         """ faccio chiedere i valori se lo richiamo come 
         """
         if opz == []:               
@@ -221,14 +270,14 @@ class ahp():
         self.equiparo_lunghezze(opz)
         testo_opz = 'juzgando la "mejor" entre estas alternativas (opciones):'
         self.show_opz(opz, testo_opz )
-        self.stop()
+        # self.stop()()
 
         if crit == []: 
             crit = self.in_crit()
         self.equiparo_lunghezze(crit)
         testo_crit = 'utilizando estos criterios:'
         self.show_opz(crit, testo_crit)
-        self.stop()
+        # self.stop()()
 
         # print "le opzioni sono", opz,"i criteri sono", crit 
         """ ora che ho raccolto i criteri e le opzioni, 
@@ -239,16 +288,18 @@ class ahp():
         if G == []:
             G = self.giudico_opzioni_in_base_ai_criteri(opz, crit)
         self.show_giudizio_opz_su_crit(opz, crit, G)
-        self.stop()
+        # self.stop()()
 
         # b. 
         if  g_c == []:
             g_c = self.confronto_criteri(crit)    
         self.show_confronto_criteri(crit, g_c) 
-        self.stop()
+        # self.stop()()
 
-        self.risultato(opz, crit, G, g_c)
-        self.stop()
+        self.risultato(opz, crit, G, g_c, grafico = grafico)
+        # # self.stop()()
+
+        # return 
 
 # Esecuzione ========================================
 if __name__ == "__main__":
@@ -268,4 +319,5 @@ if __name__ == "__main__":
                          g_c = [[    1,  8,  7, 9],                           # se voglio immetterle a mano  
                                 [0.125,  1,  7, 8], 
                                 [ 0.14,.11,  1, 7], 
-                                [0.111,.12,.11 , 1]])
+                                [0.111,.12,.11 , 1]],
+                    grafico = "yes")
