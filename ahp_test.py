@@ -74,15 +74,27 @@ class LearningCase(unittest.TestCase):
                              c = ['autonomia', 'economicidad ', 'compañia', 'belleza'], 
                             G = [[10, 7, 7, 9], [5, 5, 10, 7], [10, 9, 2, 5]], 
                             C = [[1,  8,  7, 9], [0.125,  1,  7, 8], [ 0.14,.11,  1, 7], [0.111,.12,.11 , 1]] )
-
         self.assertEqual(dd1['gato'],  8.531705970502406)
-
 
         # read parameters from file 
         opz, c, G , C = a1.inp_from_file("pet.txt")
         dd2 = a1.risultato( opz, c, G, C )
         self.assertEqual(dd2['gato'],  8.531705970502406)
 
+    def test_read_external_file_(self):
+        # Read en external data file 
+        # read parameters from file 
+        opz, c, G , C = a1.inpt_from_file("pets.txt")
+        dd2 = a1.risultato( opz, c, G, C )
+        self.assertEqual(dd2['gato'],  8.531705970502406)   
+
+
+    def test_gira_matrice(self):
+        # fronm a list of string values e list of float
+        self.assertEqual( 86,  sum([sum(i) for i in a1.gira_matrice() ]))   
+
+
+        pass
 
 
 def main():

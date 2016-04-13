@@ -32,6 +32,28 @@ class ahp():
         raw_input("»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»\n\n")
         pass
 
+    def gira_matrice(self, opz = ["a","b","c"], 
+        li = ['10', '5', '10',   
+              '7', '5', '9',
+              '7', '10', '2',
+              '9', '7', '5']):
+
+        print sum([int(j) for j in li])
+        max_ = len(li)/len(opz)
+        print max_
+        varie = []
+        for a in range(len(opz)):
+            print "a:",a
+            sublist = []
+            i=0
+            while i < len(li)/3:
+                sublist.append(int(li[a+i*len(opz)])) 
+                i +=1
+            varie.append(sublist)
+        return varie
+
+
+
     def inp_from_file(self, nombre):
         variabili = []
 
@@ -59,8 +81,12 @@ class ahp():
                     # ['autonomia', 'economicidad ', 'compania', 'belleza'])
 
 
-
                 if l[:5] == "Giud:":  
+                       variabili.append( 
+                    [[10, 7, 7, 9], [5, 5, 10, 7], [10, 9, 2, 5]], )
+
+
+                if l[:5] == "[:Giud":  
                      variabili.append( 
                      [[10, 7, 7, 9], [5, 5, 10, 7], [10, 9, 2, 5]], )
 
@@ -68,9 +94,80 @@ class ahp():
             #     g_c : [[1,  8,  7, 9],      [0.125,  1,  7, 8],        [ 0.14,.11,  1, 7],       [0.111,.12,.11 , 1]]
                     variabili.append( [[1,  8,  7, 9],  [0.125,  1,  7, 8], [0.14,.11,  1, 7], [0.111,.12,.11 , 1]])
         # print "lunghezza variabili = ", len(variabili)
-        print variabili
+        # print variabili
         return variabili
 
+    def inpt_from_file(self, nombre):
+        variabili = [] 
+        opz_lines, crit_lines, giud_lines = [], [], []     
+        opz_ok, crit_ok, giud_ok = False, False, False  
+        with open(  HERE+"/choices_all/"+ nombre, 'r') as data:
+            lines = [line for line in data.readlines()]  
+            for i in lines:
+                if i[:7] == "[:opz:]":
+                    opz_ok = True
+                if i[:8] == "[/:opz:]":
+                    opz_ok = False
+                if opz_ok:
+                    opz_lines.append(i)
+
+                if i[:8] == "[:crit:]":
+                    crit_ok = True
+                if i[:9] == "[/:crit:]":
+                    crit_ok = False
+                if crit_ok:
+                    crit_lines.append(i)
+
+                if i[:8] == "[:giud:]":
+                    giud_ok = True
+                if i[:9] == "[/:giud:]":
+                    giud_ok = False
+                if giud_ok:
+                    giud_lines.append(i)
+        # print opz_lines, "\n", crit_lines, "\n", giud_lines  # ok
+
+        opz_clean = []
+        for testo in opz_lines:
+            if testo[:7] != "[:opz:]":
+                opz_clean.append(testo.split("#")[0].strip())
+        """    
+        print len(opz_clean), opz_clean """
+        variabili.append(opz_clean)
+        print variabili
+        
+        crit_clean = []
+        for testo in crit_lines:
+            if testo[:8] != "[:crit:]":     
+                crit_clean.append(testo.split("#")[0].strip())  
+        variabili.append(crit_clean)
+
+        giud_clean = []
+        for testo in giud_lines:
+            if testo[:8] != "[:giud:]":
+                if "-->" in testo:
+                    giud_clean.append(testo.split("-->")[1].strip())  # was int()
+        print giud_clean
+
+        giud_clean_matrix = []
+        for i in range(len(opz_clean)):
+            print "valore della matrice", giud_clean[i]
+            giud_clean_matrix.append(list(giud_clean[i]))
+
+        print " giud_clean_matrix:", giud_clean_matrix                    
+        for i in range(len(opz_clean), len(giud_clean)):
+            print i, i%len(opz_clean)
+            giud_clean_matrix[i%len(opz_clean)].append(giud_clean[i])
+
+            # [[ coppia[0] for coppia in lista] for lista in atr]
+
+        results = [[int(i) for i in lista] for lista in giud_clean_matrix]
+        variabili.append(results)
+
+        giud_lines
+        giud_lines
+
+        print variabili
+        return variabili    
 
     def equiparo_lunghezze(self, lista):
         """max(mylist, key=len)"""
