@@ -41,7 +41,7 @@ class LearningCase(unittest.TestCase):
         # equiparo_lunghezze(self, lista):
         self.assertEqual(len(a1.equiparo_lunghezze(c)[0]), 4)
         self.assertEqual(len(a1.equiparo_lunghezze(c)[2]), 4)
-
+ 
     def test_normalizzazione(self):
         """lineare or Square or Square Root 
             https://www.mathsisfun.com/sets/function-inverse.html 
@@ -71,7 +71,7 @@ class LearningCase(unittest.TestCase):
 
         # parametri  
         dd1 = a1.risultato( opz = ['gato', 'perro', 'pez',],
-                             c = ['autonomia', 'economicidad ', 'compañia', 'belleza'], 
+                            c = ['autonomia', 'economicidad ', 'compañia', 'belleza'], 
                             G = [[10, 7, 7, 9], [5, 5, 10, 7], [10, 9, 2, 5]], 
                             C = [[1,  8,  7, 9], [0.125,  1,  7, 8], [ 0.14,.11,  1, 7], [0.111,.12,.11 , 1]] )
         self.assertEqual(dd1['gato'],  8.531705970502406)
@@ -86,15 +86,16 @@ class LearningCase(unittest.TestCase):
         # read parameters from file 
         opz, c, G , C = a1.inpt_from_file("pets.txt")
         dd2 = a1.risultato( opz, c, G, C )
-        self.assertEqual(dd2['gato'],  8.531705970502406)   
+        self.assertAlmostEqual(dd2['gato'],  8.531705970502406, places=2)   
 
 
     def test_gira_matrice(self):
         # fronm a list of string values e list of float
         self.assertEqual( 86,  sum([sum(i) for i in a1.gira_matrice() ]))   
 
+    def test_che_riga(self):
+        self.assertEqual(a1.che_riga(0, giud = ["a","b"]),(0,1))
 
-        pass
 
 
 def main():

@@ -32,6 +32,32 @@ class ahp():
         raw_input("»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»\n\n")
         pass
 
+
+    def che_riga(self, numero, giud = ["a","b","c","e","f","g"],):
+        # for a number, return the position (row and column) in a 
+        # triangular matrix 
+        # all values are stored in a dictionay, called riga_colonna
+        num = 0            # initial value of numero
+        # i = 0              # erase!!    
+        riga = 0           # initial row number
+        riga_colonna = {}  # row and column for each number in a list
+        while riga < len(giud):  #only for valid row
+            # print "riga: ", riga
+            num_last = num + len(giud) - 1 - riga # last row number + 1
+            # print "-- num_last + 1:", num_last 
+            num_iniz = num
+            for j in range(num, num_last):
+                riga_colonna[j]= (riga, riga + 1 + j - num_iniz )   # (j)%(len(giud)) 
+                # print "\t\tj: ", j
+                # print "\triga_colonna[",j,"]:", riga_colonna[j]
+                num += 1
+            num_last =  num + len(giud) - 1 - riga
+            riga += 1
+            # print "\t\t\tnum aggiornato:", num 
+        # print riga_colonna
+
+        return riga_colonna[numero]
+
     def gira_matrice(self, opz = ["a","b","c"], 
         li = ['10', '5', '10',   
               '7', '5', '9',
@@ -52,6 +78,39 @@ class ahp():
             varie.append(sublist)
         return varie
 
+
+    def componi_matrice(self, giud = ["a","b","c", "e"], 
+            g_c_half = ['8', '7', '9', '7', '8', '7']):
+        l = len(giud)   # numbers of criterias  
+        print "numbers of criterias:", l     
+        matrice = [[] for x in range(l)]   # initialize the matrix as a list of list
+        print "First version of the matrix:\n", matrice
+        for j_r in range(l):               # initialize the matrix with lower and diagonal values
+            print j_r
+            for j_c in range(l):
+                if j_c < j_r:  
+                    matrice[j_r].append(0)
+                if j_c == j_r:  
+                    matrice[j_r].append(1)
+        print "Second version of the matrix:\n", matrice
+
+        #cont = l - 1   # the number of active rows
+        for i in range(len(g_c_half)):
+            
+            matrice[self.che_riga(i, giud)[0]].append(float(g_c_half[i]))
+                # exchange row and column
+            matrice[self.che_riga(i, giud)[1]][self.che_riga(i, giud)[0]] = float(1.0/float(g_c_half[i])) 
+            
+            # @ matrice[]
+            # cont -= 1            
+
+        # }    matrice = [[1],]
+        """
+        for i in range(l-1):
+            matrice[0].append(g_c_half[i])
+        """
+        print "Third version of the matrix:\n", matrice
+        return matrice
 
 
     def inp_from_file(self, nombre):
@@ -95,12 +154,13 @@ class ahp():
                     variabili.append( [[1,  8,  7, 9],  [0.125,  1,  7, 8], [0.14,.11,  1, 7], [0.111,.12,.11 , 1]])
         # print "lunghezza variabili = ", len(variabili)
         # print variabili
+
         return variabili
 
     def inpt_from_file(self, nombre):
         variabili = [] 
-        opz_lines, crit_lines, giud_lines = [], [], []     
-        opz_ok, crit_ok, giud_ok = False, False, False  
+        opz_lines, crit_lines, giud_lines , g_c_lines = [], [], [], []     
+        opz_ok, crit_ok, giud_ok, g_c_ok = False, False, False, False 
         with open(  HERE+"/choices_all/"+ nombre, 'r') as data:
             lines = [line for line in data.readlines()]  
             for i in lines:
@@ -124,6 +184,15 @@ class ahp():
                     giud_ok = False
                 if giud_ok:
                     giud_lines.append(i)
+
+                if i[:7] == "[:g_c:]":
+                    g_c_ok = True
+                if i[:8] == "[/:g_c:]":
+                    g_c_ok = False
+                if g_c_ok:
+                    g_c_lines.append(i)
+
+                    
         # print opz_lines, "\n", crit_lines, "\n", giud_lines  # ok
 
         opz_clean = []
@@ -147,24 +216,20 @@ class ahp():
                 if "-->" in testo:
                     giud_clean.append(testo.split("-->")[1].strip())  # was int()
         print giud_clean
+        variabili.append(self.gira_matrice(variabili[0], giud_clean))
 
-        giud_clean_matrix = []
-        for i in range(len(opz_clean)):
-            print "valore della matrice", giud_clean[i]
-            giud_clean_matrix.append(list(giud_clean[i]))
+        # HERE!!!
+        g_c_clean = []
+        for testo in g_c_lines:
+            if testo[:7] != "[:g_c:]":
+                if "-->" in testo:
+                    g_c_clean.append(testo.split("-->")[1].strip())
+        """    
+        print len(opz_clean), opz_clean """
+        variabili.append(self.componi_matrice(crit_clean, g_c_clean))
 
-        print " giud_clean_matrix:", giud_clean_matrix                    
-        for i in range(len(opz_clean), len(giud_clean)):
-            print i, i%len(opz_clean)
-            giud_clean_matrix[i%len(opz_clean)].append(giud_clean[i])
-
-            # [[ coppia[0] for coppia in lista] for lista in atr]
-
-        results = [[int(i) for i in lista] for lista in giud_clean_matrix]
-        variabili.append(results)
-
-        giud_lines
-        giud_lines
+        print variabili
+        print g_c_clean
 
         print variabili
         return variabili    
@@ -225,7 +290,8 @@ class ahp():
               o logaritmica o quadratica """
         l = len(x)
         g_c = []
-        [g_c.append( [0] * len(x) ) for i in range(len(x))]   # appendo la stessa variabile (che punta alla ipse lista a!!!)
+        [g_c.append( [0] * len(x) ) for i in range(len(x))]   
+        # appendo la stessa variabile (che punta alla ipse lista a!!!)
         for i in range(l):          # vale 0 --> 3
             for j in range(l):      # vale 0 --> 3
                 if j == i: 
