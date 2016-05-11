@@ -6,7 +6,7 @@ AHP allow the analytic hierarchy process by a python script.
 A mathematical, and coherent, translation of human choices is provided.
 
 ## Motivation
-Supply to everyone a clear, 
+Supply to everyone a clear description of the process (with also the motivation), an a visual image of the result. 
 
 
 ## Installation
@@ -18,6 +18,22 @@ Then, only execute the ahp.py file in the same directory you download the main f
 ## Use
 To run the AHP process, each case must be saved as a text file in the "choices" directory.
 You can use an already prepared file as pattern.
+	To use the prepared pattern, you need to supply the list of choices and of the criteria involved in the process, and to call the file the_name_you_want_CC.txt.
+
+	So, for instance, the file mobile_CC.txt, should contain: 
+
+	[:opz:]
+	opz_1       # comment
+	opz_2   	# comment
+	opz_3		# comment
+	[/:opz:]
+
+	[:crit:]
+	crit_1 		# comment
+	crit_2
+	crit_3		# comment
+	crit_4      # comment
+	[/:crit:] 
 
 To a correct visualization, please, avoid unicode character in variables (they don't matter in comment).
 

@@ -109,6 +109,36 @@ class LearningCase(unittest.TestCase):
         self.assertAlmostEqual(float(a1.smart_div("1/3")), 0.333333, places=4)   
         self.assertAlmostEqual(float(a1.smart_div("1/20")), 0.05, places=4)   
 
+    def test_remove_CC(self):
+        n = a1.remove_CC("giusep_CCpina")
+        self.assertEqual(n, "giuseppina")
+
+    def test_prepara_file(self):
+        """ read opz and criteria and format files to complete with values  """
+        
+        """
+        nome_f_iniz = "cell_CC.txt"
+
+
+        # with file()
+        nf = "pippo"
+        with open( nf, 'w') as f:
+            f = a1.prepara_file(opz, crit)
+        """
+        H = HERE + "/choices/"
+        nome_f_iniz = "cell_CC.txt"
+        file = open( H + nome_f_iniz, "w")
+        file.write('[:opz:] \nnuovo fico \n usato\n nuovo base \n[/:opz:] \n')
+        file.write('[:crit:] \nfotografie \n spensieratezza \n prestigio \n me gusta \n comodo \n leggero [/:crit:] ' )
+        file.close()
+        f = a1.prepara_file( nome_f_iniz )
+        self.assertTrue( os.path.isfile(H + 'cell.txt') )
+
+        a = a1.inpt_from_file(nome_f_iniz)
+        os.remove(H + "cell_CC.txt")
+        os.remove(H + "cell.txt")
+
+
 def main():
     unittest.main()
 

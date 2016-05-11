@@ -11,6 +11,7 @@
 # import unittest 
 import os
 import matplotlib.pyplot as plt
+import shutil
 import numpy as np
 # import ML
 
@@ -48,6 +49,38 @@ class ahp():
             return int(b[0]) / float(b[1])
         else:
             return testo
+
+    def remove_CC(self, case):
+        due = case.split("_CC")                                                                                                                                                                                                                                                                                                                                                             
+        return ("").join(due)
+ 
+    def prepara_file(self, nome_file):
+        """ inside choices"""
+        H = HERE +'/choices/'
+        new_name = self.remove_CC(nome_file)
+        shutil.copy2( H + nome_file, H + new_name)
+        
+        # with open(HERE +'/choices/' + new_name, a):
+
+        a = self.inpt_from_file(nome_file)
+        self.equiparo_lunghezze( a[0]) 
+        self.equiparo_lunghezze( a[1])
+        with open( H + new_name, 'a') as f: 
+            f.write('\n[:giud:]        solo da 0 a 10 \n')
+            for i in a[1]: 
+                f.write('\t\t'+ i + "\t\t# \n")
+                for j in a[0]: 
+                    f.write('\t' + j + '\t\t-->          --> \n' )
+            f.write('[/:giud:] \n')
+
+            f.write('\n[:g_c:]        da 1/10 a 10 \n')
+            l = a[1]
+            while len(l) > 1 :
+                f.write('\t\t' + l[0] + '\n') 
+                l.pop(0)
+                for i in l:
+                    f.write( '\t' + i + '\t\t -->            -->\n') 
+            f.write('[/:g_c:] \n')
 
     def che_riga(self, numero, giud = ["a","b","c","e","f","g"],):
         # for a number, return the position (row and column) in a 
@@ -441,8 +474,14 @@ if __name__ == "__main__":
     for case in fench_files("choices"):
         # print case
         # print type(case)
-        v = a1.inpt_from_file(case)
-        a1.esecuzione(v[0], v[1], v[2], v[3], grafico = "yes")
+        if not("_CC" in case):
+            v = a1.inpt_from_file(case)
+            a1.esecuzione(v[0], v[1], v[2], v[3], grafico = "yes")
+        else:
+            # print "c'è un _CC !!"
+            a1.prepara_file( case )
+            # prepare file
+
 
 
         
