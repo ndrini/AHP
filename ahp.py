@@ -16,6 +16,14 @@ import numpy as np
 
 HERE = os.path.dirname(os.path.realpath(__file__))
 
+def fench_files(relative_path):   # relative path
+    # retrive files from a certain directory
+    # files = [f for f in os.listdir(HERE+"/"+relative_path) if path.isfile(f)]
+    files = [f for f in os.listdir(HERE+"/"+relative_path) \
+             if os.path.isfile(os.path.join(HERE +"/"+relative_path, f))]
+    print "Founded file/s: ", files, "\n"
+    return files
+
 class ahp():
 
     def input(self, testo = "Scrivi l'input\n»"):
@@ -32,6 +40,14 @@ class ahp():
         raw_input("»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»\n\n")
         pass
 
+    def smart_div(self, testo):
+        # allow text value to have this form 1/2,
+        # with the result of float(smart_div("1/2"))= 0.5
+        if "/" in testo:
+            b = testo.split("/")
+            return int(b[0]) / float(b[1])
+        else:
+            return testo
 
     def che_riga(self, numero, giud = ["a","b","c","e","f","g"],):
         # for a number, return the position (row and column) in a 
@@ -63,43 +79,43 @@ class ahp():
               '7', '5', '9',
               '7', '10', '2',
               '9', '7', '5']):
+        # from a list of string values a list of float
 
-        print sum([int(j) for j in li])
+        # print sum([int(j) for j in li])
         max_ = len(li)/len(opz)
-        print max_
+        # print max_
         varie = []
         for a in range(len(opz)):
-            print "a:",a
+            # print "a:",a
             sublist = []
             i=0
-            while i < len(li)/3:
+            while i < len(li)/len(opz):          # 3 ? 
                 sublist.append(int(li[a+i*len(opz)])) 
                 i +=1
             varie.append(sublist)
         return varie
 
 
-    def componi_matrice(self, giud = ["a","b","c", "e"], 
-            g_c_half = ['8', '7', '9', '7', '8', '7']):
+    def componi_matrice(self, giud = ["a","b","c", "e"], g_c_half = ['8', '7', '9', '7', '8', '7']):
         l = len(giud)   # numbers of criterias  
-        print "numbers of criterias:", l     
+        # # print "numbers of criterias:", l     
         matrice = [[] for x in range(l)]   # initialize the matrix as a list of list
-        print "First version of the matrix:\n", matrice
+        # print "First version of the matrix:\n", matrice
         for j_r in range(l):               # initialize the matrix with lower and diagonal values
-            print j_r
+            # # print j_r
             for j_c in range(l):
                 if j_c < j_r:  
                     matrice[j_r].append(0)
                 if j_c == j_r:  
                     matrice[j_r].append(1)
-        print "Second version of the matrix:\n", matrice
+        # print "Second version of the matrix:\n", matrice
 
         #cont = l - 1   # the number of active rows
         for i in range(len(g_c_half)):
             
-            matrice[self.che_riga(i, giud)[0]].append(float(g_c_half[i]))
+            matrice[self.che_riga(i, giud)[0]].append(float( self.smart_div(g_c_half[i]) ))
                 # exchange row and column
-            matrice[self.che_riga(i, giud)[1]][self.che_riga(i, giud)[0]] = float(1.0/float(g_c_half[i])) 
+            matrice[self.che_riga(i, giud)[1]][self.che_riga(i, giud)[0]] = float(1.0/float( self.smart_div(g_c_half[i]))) 
             
             # @ matrice[]
             # cont -= 1            
@@ -109,59 +125,15 @@ class ahp():
         for i in range(l-1):
             matrice[0].append(g_c_half[i])
         """
-        print "Third version of the matrix:\n", matrice
+        # # print "Third version of the matrix:\n", matrice
         return matrice
 
-
-    def inp_from_file(self, nombre):
-        variabili = []
-
-        
-        with open(  HERE+"/choices_all/"+ nombre, 'r') as data:
-            # arts[2].strip(" ")
-            lines = [line for line in data.readlines()]  
-            # print lines        
-            for l in lines:
-                if l[:5] == "opz :": # or "crit:":
-                    lin = l[5:]
-                    # print lin
-                    # linea = lin.split(',')
-                    # variabili.append([li.strip() for li in linea])
-                    variabili.append([li.strip() for li in lin.split(',')])
-
-                if l[:5] == "crit:":
-                    lin = l[5:]
-                    variabili.append([li.strip() for li in lin.split(',')])
-                    # print lin
-                    # linea = lin.strip()
-                    # variabili.append(linea.split(','))
-
-                    # variabili.append( 
-                    # ['autonomia', 'economicidad ', 'compania', 'belleza'])
-
-
-                if l[:5] == "Giud:":  
-                       variabili.append( 
-                    [[10, 7, 7, 9], [5, 5, 10, 7], [10, 9, 2, 5]], )
-
-
-                if l[:5] == "[:Giud":  
-                     variabili.append( 
-                     [[10, 7, 7, 9], [5, 5, 10, 7], [10, 9, 2, 5]], )
-
-                if l[:5] == "g_c :":
-            #     g_c : [[1,  8,  7, 9],      [0.125,  1,  7, 8],        [ 0.14,.11,  1, 7],       [0.111,.12,.11 , 1]]
-                    variabili.append( [[1,  8,  7, 9],  [0.125,  1,  7, 8], [0.14,.11,  1, 7], [0.111,.12,.11 , 1]])
-        # print "lunghezza variabili = ", len(variabili)
-        # print variabili
-
-        return variabili
-
-    def inpt_from_file(self, nombre):
+    def inpt_from_file(self, nombre, c="/choices/"):
+        """ read variables from a file in a choice_all directory """
         variabili = [] 
         opz_lines, crit_lines, giud_lines , g_c_lines = [], [], [], []     
         opz_ok, crit_ok, giud_ok, g_c_ok = False, False, False, False 
-        with open(  HERE+"/choices_all/"+ nombre, 'r') as data:
+        with open( HERE+ c + nombre, 'r') as data:
             lines = [line for line in data.readlines()]  
             for i in lines:
                 if i[:7] == "[:opz:]":
@@ -193,16 +165,16 @@ class ahp():
                     g_c_lines.append(i)
 
                     
-        # print opz_lines, "\n", crit_lines, "\n", giud_lines  # ok
+        # # # print opz_lines, "\n", crit_lines, "\n", giud_lines  # ok
 
         opz_clean = []
         for testo in opz_lines:
             if testo[:7] != "[:opz:]":
                 opz_clean.append(testo.split("#")[0].strip())
         """    
-        print len(opz_clean), opz_clean """
+        # print len(opz_clean), opz_clean """
         variabili.append(opz_clean)
-        print variabili
+        # print variabili
         
         crit_clean = []
         for testo in crit_lines:
@@ -215,7 +187,7 @@ class ahp():
             if testo[:8] != "[:giud:]":
                 if "-->" in testo:
                     giud_clean.append(testo.split("-->")[1].strip())  # was int()
-        print giud_clean
+        # print giud_clean
         variabili.append(self.gira_matrice(variabili[0], giud_clean))
 
         # HERE!!!
@@ -225,20 +197,20 @@ class ahp():
                 if "-->" in testo:
                     g_c_clean.append(testo.split("-->")[1].strip())
         """    
-        print len(opz_clean), opz_clean """
+        # print len(opz_clean), opz_clean """
         variabili.append(self.componi_matrice(crit_clean, g_c_clean))
 
-        print variabili
-        print g_c_clean
+        # print variabili
+        # print g_c_clean
 
-        print variabili
+        # print variabili
         return variabili    
 
     def equiparo_lunghezze(self, lista):
         """max(mylist, key=len)"""
         a = len(max(lista, key=len))        # trovo la lunghezza del valore + lungo
         for i in range(len(lista)):
-            # print len(lista[i]) 
+            # # print len(lista[i]) 
             b = a - len(lista[i])
             lista[i] = lista[i]+ " "*b      # equiparo la lunghezza al massimo
         return lista
@@ -334,7 +306,7 @@ class ahp():
 
         for j in range(len(G[0])):          # per tutti i criteri
             for i in range(len(G)):
-                print '\t » Has juzgado', opz[i],'\t segun el criterio',crit[j],'\tcon un', G[i][j] 
+                print '\t » Has juzgado', opz[i],'\t en función del criterio',crit[j],'\tcon un', G[i][j] 
                 # print frase
         self.separatore()
 
@@ -426,8 +398,7 @@ class ahp():
                                 [0.2, .1,  1, 5], 
                                 [0.5,.25, .2, 1]],
                     grafico = "no"):          # permetto di eseguire lo script 
-        """ faccio chiedere i valori se lo richiamo come 
-        """
+        """ faccio chiedere i valori se lo richiamo come        """
         if opz == []:               
             opz = self.in_opz()
         self.equiparo_lunghezze(opz)
@@ -466,21 +437,12 @@ class ahp():
 
 # Esecuzione ========================================
 if __name__ == "__main__":
-    print(chr(27) + "[2J")
     a1 = ahp()
-    # opz = a1.in_opz()
-    # crit = a1.in_crit()
+    for case in fench_files("choices"):
+        # print case
+        # print type(case)
+        v = a1.inpt_from_file(case)
+        a1.esecuzione(v[0], v[1], v[2], v[3], grafico = "yes")
 
-    # a1.risultato()
-    # a1.giudico_opzioni_in_base_ai_criteri()
-    # a1.esecuzione(opz = []) 
-    # a1.esecuzione() 
 
-    a1.esecuzione(  opz = ['gato', 'perro', 'pez',], 
-                    crit = ['autonomia', 'economicidad ', 'compañia', 'belleza'], 
-                         G = [[10, 7, 7, 9], [5, 5, 10, 7], [10, 9, 2, 5]],   # [], #
-                         g_c = [[    1,  8,  7, 9],                           # se voglio immetterle a mano  
-                                [0.125,  1,  7, 8], 
-                                [ 0.14,.11,  1, 7], 
-                                [0.111,.12,.11 , 1]],
-                    grafico = "yes")
+        

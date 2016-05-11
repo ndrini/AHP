@@ -77,9 +77,9 @@ class LearningCase(unittest.TestCase):
         self.assertEqual(dd1['gato'],  8.531705970502406)
 
         # read parameters from file 
-        opz, c, G , C = a1.inp_from_file("pet.txt")
+        opz, c, G , C = a1.inpt_from_file("pets.txt", c = "/choices_all/")
         dd2 = a1.risultato( opz, c, G, C )
-        self.assertEqual(dd2['gato'],  8.531705970502406)
+        self.assertEqual(dd2['gato'],  8.530978982733028)
 
     def test_read_external_file_(self):
         # Read en external data file 
@@ -90,13 +90,24 @@ class LearningCase(unittest.TestCase):
 
 
     def test_gira_matrice(self):
-        # fronm a list of string values e list of float
-        self.assertEqual( 86,  sum([sum(i) for i in a1.gira_matrice() ]))   
+        # from a list of string values a list of float
+        self.assertEqual( 86,  sum([sum(i) for i in a1.gira_matrice() ])) 
+
+        opz = ["a","b","c", "d"] 
+        li = ['10', '5', '10', '5',    
+              '7', '5', '9', '5',
+              '7', '10', '2','5',
+              '9', '7', '5', '5',]
+        self.assertEqual( 106,  sum([sum(i) for i in a1.gira_matrice(opz,li) ])) 
+
 
     def test_che_riga(self):
         self.assertEqual(a1.che_riga(0, giud = ["a","b"]),(0,1))
 
-
+    def test_smart_div(self):
+        #        self.assertEqual(a1.che_riga(0, giud = ["a","b"]),(0,1))
+        self.assertAlmostEqual(float(a1.smart_div("1/3")), 0.333333, places=4)   
+        self.assertAlmostEqual(float(a1.smart_div("1/20")), 0.05, places=4)   
 
 def main():
     unittest.main()
