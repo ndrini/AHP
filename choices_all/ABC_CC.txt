@@ -1,0 +1,19 @@
+Goal: cleary select A from B and C
+
+[:opz:]
+A       # best choice
+B	    # second choice
+C   	# wosrt choice 
+[/:opz:]
+Other kind of comment about options.
+
+[:crit:]
+C1 		 # more important
+C2		 # 
+C3 		 #         
+C4       #  
+C5       #  
+C6       #  
+C7       #  less important
+[/:crit:]
+

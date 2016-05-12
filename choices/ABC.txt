@@ -1,0 +1,95 @@
+Goal: cleary select A from B and C
+
+[:opz:]
+A       # best choice
+B	    # second choice
+C   	# wosrt choice 
+[/:opz:]
+Other kind of comment about options.
+
+[:crit:]
+C1 		 # more important
+C2		 # 
+C3 		 #         
+C4       #  
+C5       #  
+C6       #  
+C7       #  less important
+[/:crit:]
+
+
+[:giud:]        solo da 0 a 10 
+		C1		# 
+	A		-->  8        --> 
+	B		-->  6        --> 
+	C		-->  4        --> 
+		C2		# 
+	A		-->  8        --> 
+	B		-->  6        --> 
+	C		-->  4        --> 
+		C3		# 
+	A		-->  8        --> 
+	B		-->  6        --> 
+	C		-->  4        --> 
+		C4		# 
+	A		-->  8        --> 
+	B		-->  6        --> 
+	C		-->  4        --> 
+		C5		# 
+	A		-->  8        --> 
+	B		-->  6        --> 
+	C		-->  4        --> 
+		C6		# 
+	A		-->  8        --> 
+	B		-->  6        --> 
+	C		-->  4        --> 
+		C7		# 
+	A		-->  8        --> 
+	B		-->  6        --> 
+	C		-->  4        --> 
+[/:giud:] 
+
+[:g_c:]        from 1/10 to 10 rate the left lower criterio against the upper right   
+			C2
+	C1		 -->   2         -->
+			C3
+	C1		 -->   2        -->
+			C4
+	C1		 -->   2        -->
+			C5
+	C1		 -->   2         -->
+			C6
+	C1		 -->   2        -->
+			C7
+	C1		 -->   2         -->
+			C3
+	C2		 -->   2        -->
+			C4
+	C2		 -->   2         -->
+			C5
+	C2		 -->   2        -->
+			C6
+	C2		 -->   2        -->
+			C7
+	C2		 -->   2        -->
+			C4
+	C3		 -->   2        -->
+			C5
+	C3		 -->   2        -->
+			C6
+	C3		 -->   2        -->
+			C7
+	C3		 -->   2        -->
+			C5
+	C4		 -->   2       -->
+			C6
+	C4		 -->   2        -->
+			C7
+	C4		 -->   2         -->
+			C6
+	C5		 -->   2        -->
+			C7
+	C5		 -->   2        -->
+			C7
+	C6		 -->   2         -->
+[/:g_c:] 
