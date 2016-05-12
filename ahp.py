@@ -73,13 +73,14 @@ class ahp():
                     f.write('\t' + j + '\t\t-->          --> \n' )
             f.write('[/:giud:] \n')
 
-            f.write('\n[:g_c:]        da 1/10 a 10 \n')
+            f.write('\n[:g_c:]        from 1/10 to 10 rate the left lower criterio against the upper right   \n')
             l = a[1]
             while len(l) > 1 :
-                f.write('\t\t' + l[0] + '\n') 
+                temp = l[0]
                 l.pop(0)
                 for i in l:
-                    f.write( '\t' + i + '\t\t -->            -->\n') 
+                    f.write( '\t\t\t' + i + '\n') 
+                    f.write('\t' + temp + '\t\t -->            -->\n') 
             f.write('[/:g_c:] \n')
 
     def che_riga(self, numero, giud = ["a","b","c","e","f","g"],):
