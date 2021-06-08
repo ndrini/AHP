@@ -1,0 +1,67 @@
+[:opz:]
+gato		     # the cat, 
+perro		     #
+pez              #
+[/:opz:]
+
+[:crit:]
+autonomia        # ¿que hace solo?
+economicidad     # 
+compania         # 
+belleza          # 
+[/:crit:]
+
+[:giud:] 
+	        		autonomia
+	gato  	-->     10        --> #
+	perro   -->     5         --> #  <·>
+	pez  	-->     10        --> un poco de domida, ningun paseo en la calle
+			economicidad  
+	gato    -->     7  
+	perro   -->     5
+	pez     -->     9         --> comida expecial
+
+			compania
+	gato    -->   7
+	perro   -->   10
+	pez     -->   2
+			    belleza
+	gato    --> 9  
+	perro   --> 7
+	pez  	--> 5 
+[/:giud:]            # [[10, 7, 7, 9], [5, 5, 10, 7], [10, 9, 2, 5]]
+
+[:g_c:]
+					economicidad	 	
+autonomia	 -->	8			-->	 my life is still really full! (I don't wanna pet troubles)	
+
+					compania
+autonomia	 -->	7			-->		
+
+ 					belleza 
+autonomia	 -->	9			-->		
+
+					compania
+economicidad -->	7			-->	 second with third
+
+ 					belleza 
+economicidad -->	8			-->	second with 4-th
+			
+					belleza
+compania     -->	7 			-->	third with 4-th
+
+[/:g_c:]		# [[1,  8,  7, 9],      [0.125,  1,  7, 8],        [ 0.14,.11,  1, 7],       [0.111,.12,.11 , 1]]
+
+
+
+			autonomia		economicidad	 compania		 belleza 
+
+autonomia	 -->	1	-->		8 	--> 	7		-->		9 		--> 
+economicidad -->	5555	-->		1	-->		7		-->		8		--> 
+compania     -->	7777	-->			-->		1		-->		7		--> 
+belleza      -->	9999	-->			-->				-->		1		--> 
+		# [[1,  8,  7, 9],      
+		[0.125,  1,  7, 8],        
+		[ 0.14,.11,  1, 7], 
+		[0.111,.12,.11 , 1]]
+
