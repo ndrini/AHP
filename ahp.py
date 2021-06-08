@@ -13,7 +13,25 @@ import os
 import matplotlib.pyplot as plt
 import shutil
 import numpy as np
-# import ML
+import sys
+import gettext
+
+
+
+# i18n tool
+_ = gettext.gettext
+
+if len(sys.argv) > 1:
+    if sys.argv[1] in ['it', 'es']:
+        lang_translations = gettext.translation(
+            'base', 
+            localedir='locales', 
+            languages=[sys.argv[1]])
+        lang_translations.install()
+        # define _ shortcut for translations
+        _ = lang_translations.gettext
+
+
 
 HERE = os.path.dirname(os.path.realpath(__file__))
 
@@ -23,7 +41,7 @@ def fench_files(relative_path):   # relative path
     # files = [f for f in os.listdir(HERE+"/"+relative_path) if path.isfile(f)]
     files = [f for f in os.listdir(HERE+"/"+relative_path)
              if os.path.isfile(os.path.join(HERE + "/"+relative_path, f))]
-    print("Founded file/s: ", files, "\n")
+    print(_("Founded file/s: "), files, "\n")
     return files
 
 
@@ -272,7 +290,9 @@ three times which will then appear as ###: '''
 
     def show_opz(self, cosa, testo):
         """ mostro opzioni e criteri"""
-        print('Estas', testo)
+        # print('Estas', testo)
+        print(_('These'), testo)
+
         for i in cosa:
             print("\t # ", i)
         self.separatore()
@@ -323,15 +343,17 @@ three times which will then appear as ###: '''
         return g_c
 
     def show_confronto_criteri(self, crit, g_c):
-        print("Has juzgando la importancia de los criterios como sigue:")
+        # print("Has juzgando la importancia de los criterios como sigue:")
+        print(_("You judged the relevance of these criterias as shown:"))
         l = len(crit)
         for i in range(l):          # vale 0 --> 3
             for j in range(l):      # vale 0 --> 3
                 if j == i:
                     pass
                 if j > i:
-                    print('\t', crit[i], "\tcon respeto a \t",
-                    crit[j], "\t:", g_c[i][j])
+                    print('\t', crit[i], "\t")
+                    # print(_('con respeto a \t"))
+                    print(_('respect to \t'), crit[j], "\t:", g_c[i][j])
         self.separatore()
 
     def giudico_opzioni_in_base_ai_criteri(self,
@@ -344,8 +366,10 @@ three times which will then appear as ###: '''
         print(G)
         for j in range(len(G[0])):
             for i in range(len(G)):
-                frase="come giudichi " + \
-                    opz[i] + " secondo il criterio " + c[j] + "\n »"
+                # frase="come giudichi " + \
+                #     opz[i] + _(" secondo il criterio ") + c[j] + "\n »"
+                frase= _("how do you judge") + \
+                    opz[i] + _(" by the criteria ") + c[j] + "\n »"
                 # print(frase
                 G[i][j]=input(frase)  # 2    self.input(frase)
         print(G)
@@ -353,12 +377,13 @@ three times which will then appear as ###: '''
 
     def show_giudizio_opz_su_crit(self, opz, crit, G):
         """mostro il giudizio """
-        print("Has juzgando las alternativas segun los criterios como sigue:")
+        # print("Has juzgando las alternativas segun los criterios como sigue:")
+        print(_("You judged the options by criteria as shown:"))
 
         for j in range(len(G[0])):          # per tutti i criteri
             for i in range(len(G)):
-                print('\t » Has juzgado', opz[i],
-                 '\t en función del criterio', crit[j], '\tcon un', G[i][j])
+                print('\t » ', _('You judged'), opz[i],
+                 '\t', _('based on criteria'), crit[j], '\t with ', G[i][j])
                 # print(frase
         self.separatore()
 
@@ -407,22 +432,26 @@ three times which will then appear as ###: '''
         R=G * g_c    # {2 · 3} {3·1}      = {2·1}
         for j in range(len(opz)):
             if verbose:
-                print("\tLa alternativa ", opz[j], "\ttiene judicio global de", "{:6.4f}".format(
+                # print("\tLa alternativa ", opz[j], "\ttiene judicio global de", "{:6.4f}".format(
+                print(-("\tthe alternative "), opz[j],
+                 _("\thas a global evaluation of"), "{:6.4f}".format(
                     float(R[[j], :])))
 
             # ris.append([opz[j], float(R[[j], :]) )
             ris.append(float(R[[j], :]))
         # self.separatore()
         if verbose:
-            print("La alternativa mejor ha resultado", opz[ris.index(max(ris))], \
-               "con un judicio de ", "{:6.4f}".format(max(ris)), ".\n\n")
+            # La alternativa mejor ha resultado
+            # "con un judicio de ",
+            print( _("The best option is "), opz[ris.index(max(ris))], \
+               _("with a value of "), "{:6.4f}".format(max(ris)), ".\n\n")
 
         if grafico == "yes":
             plt.bar(range(len(opz)), ris)
             plt.ylim(0, 1.2*max(ris))
-            plt.title('Histograma del judicio con AHP')
-            plt.xlabel('Alternativas')
-            plt.ylabel('Evaluacion')    # si pianta con 'Evaluación'
+            plt.title(_('Histogram of Judgement using AHP'))
+            plt.xlabel(_('Options'))
+            plt.ylabel(_('Evaluation'))    # si pianta con 'Evaluación'
             # http://matplotlib.org/examples/pylab_examples/axhspan_demo.html
             plt.axhline(y=max(ris))
             # http://matplotlib.org/examples/ticks_and_spines/ticklabels_demo_rotation.html
@@ -434,9 +463,9 @@ three times which will then appear as ###: '''
             axes=plt.gca()             # gca stands for 'get current axis'
             axes.set_xlim([value_min, value_max_x])
             axes.set_ylim([value_min, value_max_y])
-            plt.annotate(s='', xytext=(value_min, 0), xy=(
+            plt.annotate(text='', xytext=(value_min, 0), xy=(
                 value_max_x, 0), arrowprops=dict(arrowstyle='->'))
-            plt.annotate(s='', xytext=(0, value_min), xy=(
+            plt.annotate(text='', xytext=(0, value_min), xy=(
                 0, value_max_y), arrowprops=dict(arrowstyle='->'))
             plt.grid()    # grid
             plt.show()
@@ -463,14 +492,15 @@ three times which will then appear as ###: '''
         if opz == []:
             opz=self.in_opz()
         self.equiparo_lunghezze(opz)
-        testo_opz='juzgando la "mejor" entre estas alternativas (opciones):'
+        # testo_opz='juzgando la "mejor" entre estas alternativas (opciones):'
+        testo_opz=_('judge the "best" option between the possible ones:')
         self.show_opz(opz, testo_opz)
         # self.stop()()
 
         if crit == []:
             crit=self.in_crit()
         self.equiparo_lunghezze(crit)
-        testo_crit='utilizando estos criterios:'
+        testo_crit=_('using these criterias:')
         self.show_opz(crit, testo_crit)
         # self.stop()()
 
@@ -509,3 +539,4 @@ if __name__ == "__main__":
             # print("c'è un _CC !!")
             a1.prepara_file(case)
             # prepare file
+

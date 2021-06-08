@@ -1,0 +1,87 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-06-08 14:01+0200\n"
+"PO-Revision-Date: 2021-06-08 14:15+0200\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language-Team: \n"
+"X-Generator: Poedit 2.3\n"
+"Last-Translator: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: es_ES\n"
+
+#: ahp.py:40
+msgid "Founded file/s: "
+msgstr "Archivos encontrados: "
+
+#: ahp.py:290
+msgid "These"
+msgstr "Estos"
+
+#: ahp.py:343
+msgid "You judged the relevance of these criterias as shown:"
+msgstr "Has juzgando la relevancia de estos criterios como se enseña:"
+
+#: ahp.py:352
+msgid "respect to \t"
+msgstr "de cara a \t"
+
+#: ahp.py:367
+msgid "how do you judge"
+msgstr "como juzgarías"
+
+#: ahp.py:368
+msgid " by the criteria "
+msgstr " por el criterio "
+
+#: ahp.py:377
+msgid "You judged the options by criteria as shown:"
+msgstr "Haz juzgado:"
+
+#: ahp.py:381
+msgid "You judged"
+msgstr "Tu juicio"
+
+#: ahp.py:382
+msgid "based on criteria"
+msgstr "basado en el criterio"
+
+#: ahp.py:433
+msgid "\thas a global evaluation of"
+msgstr "\ttiene una evaluación global de"
+
+#: ahp.py:442
+msgid "The best option is "
+msgstr "La mejor opción "
+
+#: ahp.py:443
+msgid "with a value of "
+msgstr "con un valor de "
+
+#: ahp.py:448
+msgid "Histogram of Judgement using AHP"
+msgstr "Histograma del juicio con AHP"
+
+#: ahp.py:449
+msgid "Options"
+msgstr "Opciones"
+
+#: ahp.py:450
+msgid "Evaluation"
+msgstr "Evaluación"
+
+#: ahp.py:492
+msgid "judge the \"best\" option between the possible ones:"
+msgstr "juzgando la \"mejor\" entre estas alternativas (opciones):"
+
+#: ahp.py:499
+msgid "using these criterias:"
+msgstr "utilizando estos criterios:"
