@@ -17,35 +17,33 @@ import sys
 import gettext
 
 
-
 # i18n tool
 _ = gettext.gettext
 
 if len(sys.argv) > 1:
     if sys.argv[1] in ['it', 'es']:
         lang_translations = gettext.translation(
-            'base', 
-            localedir='locales', 
+            'base',
+            localedir='locales',
             languages=[sys.argv[1]])
         lang_translations.install()
         # define _ shortcut for translations
         _ = lang_translations.gettext
 
 
-
 HERE = os.path.dirname(os.path.realpath(__file__))
 
 
-def fench_files(relative_path):   # relative path
-    # retrive files from a certain directory
-    # files = [f for f in os.listdir(HERE+"/"+relative_path) if path.isfile(f)]
+def fetch_files(relative_path) -> list:
+    ''' return the list of file names into the relative path dir.
+    So a list of strings is returned. '''
     files = [f for f in os.listdir(HERE+"/"+relative_path)
              if os.path.isfile(os.path.join(HERE + "/"+relative_path, f))]
-    print(_("Founded file/s: "), files, "\n")
+    print(_("Founded file/s: "), ', '.join(files)[:-1], "\n")
     return files
 
 
-class ahp():
+class Ahp():
 
     def input(self, testo="Scrivi l'input\n»"):
         s = []
@@ -55,7 +53,7 @@ class ahp():
             # ottengo una stringa s con tutti gli elementi del primo nome
             s = raw_input(testo)
             print(s)
-            l.append(s) # separatore.join(s)  separatore.join(lista)
+            l.append(s)  # separatore.join(s)  separatore.join(lista)
         return l[:-1]
 
     def stop(self):
@@ -132,10 +130,10 @@ class ahp():
         return riga_colonna[numero]
 
     def gira_matrice(self, opz=["a", "b", "c"],
-        li=['10', '5', '10',
-              '7', '5', '9',
-              '7', '10', '2',
-              '9', '7', '5']):
+                     li=['10', '5', '10',
+                         '7', '5', '9',
+                         '7', '10', '2',
+                         '9', '7', '5']):
         # from a list of string values a list of float
 
         # print(sum([int(j) for j in li])
@@ -173,7 +171,7 @@ class ahp():
 
             matrice[self.che_riga(i, giud)[0]].append(
                 float(self.smart_div(g_c_half[i])))
-                # exchange row and column
+            # exchange row and column
             matrice[self.che_riga(i, giud)[1]][self.che_riga(i, giud)[0]] = float(
                 1.0/float(self.smart_div(g_c_half[i])))
 
@@ -189,7 +187,7 @@ class ahp():
         return matrice
 
     def inpt_from_file(self, nombre, c="/choices/"):
-        """ read variables from a file in a choice_all directory """
+        """ read variables from a file in a choices directory """
         variabili = []
         opz_lines, crit_lines, giud_lines, g_c_lines = [], [], [], []
         opz_ok, crit_ok, giud_ok, g_c_ok = False, False, False, False
@@ -278,14 +276,15 @@ class ahp():
     def in_opz(self):
         text = '''Write the different options to choose and separate them with
 the enter at the end of the list ends the procedure by repeating the character 
-three times which will then appear as ###: ''' 
+three times which will then appear as ###: '''
         # testo = "Scrivi le diverse opzioni far cui scegliere e separale con l'invio \
         # alla fine della lista termina la procedura ripetendo tre volte il carattere #, \
         # che apparira, quindi, come ###: \n» "
         opz = self.input(text)
         return opz
 
-    def separatore(self):
+    def separator(self):
+        ''' print an horizontal line '''
         print('_'*65, '\n\n')
 
     def show_opz(self, cosa, testo):
@@ -295,7 +294,7 @@ three times which will then appear as ###: '''
 
         for i in cosa:
             print("\t # ", i)
-        self.separatore()
+        self.separator()
 
     def in_crit(self):
         testo = "Scrivi i crireti secondo cui giudicare le opzioni\
@@ -317,10 +316,10 @@ three times which will then appear as ###: '''
             v = (values - x_min) / (x_max - x_min)
         elif tipo == "Square":
             v = (np.power(values, 2) - np.power(x_min, 2)) / \
-                 (np.power(x_max, 2) - np.power(x_min, 2))
+                (np.power(x_max, 2) - np.power(x_min, 2))
         elif tipo == "Square Root":
             v = (np.sqrt(values) - np.sqrt(x_min)) / \
-                 (np.sqrt(x_max) - np.sqrt(x_min))
+                (np.sqrt(x_max) - np.sqrt(x_min))
         return v
 
     def confronto_criteri(self, x=['c1', 'c2', 'c3', 'c4', 'c5']):
@@ -351,14 +350,14 @@ three times which will then appear as ###: '''
                 if j == i:
                     pass
                 if j > i:
-                    print('\t', crit[i], "\t")
-                    # print(_('con respeto a \t"))
-                    print(_('respect to \t'), crit[j], "\t:", g_c[i][j])
-        self.separatore()
+                    print('\t', crit[i],
+                          "\t", _('respect to \t'),
+                          crit[j], "\t:", g_c[i][j])
+        self.separator()
 
     def giudico_opzioni_in_base_ai_criteri(self,
-     opz=['o1', 'o2'],
-     c=['c1', 'c2', 'c3', ]):
+                                           opz=['o1', 'o2'],
+                                           c=['c1', 'c2', 'c3', ]):
         G = []
         v = []
         for j in range(len(opz)):  # per tutte le opzioni, creo una lista di zero
@@ -368,10 +367,10 @@ three times which will then appear as ###: '''
             for i in range(len(G)):
                 # frase="come giudichi " + \
                 #     opz[i] + _(" secondo il criterio ") + c[j] + "\n »"
-                frase= _("how do you judge") + \
+                frase = _("how do you judge") + \
                     opz[i] + _(" by the criteria ") + c[j] + "\n »"
                 # print(frase
-                G[i][j]=input(frase)  # 2    self.input(frase)
+                G[i][j] = input(frase)  # 2    self.input(frase)
         print(G)
         return G
 
@@ -383,40 +382,38 @@ three times which will then appear as ###: '''
         for j in range(len(G[0])):          # per tutti i criteri
             for i in range(len(G)):
                 print('\t » ', _('You judged'), opz[i],
-                 '\t', _('based on criteria'), crit[j], '\t with ', G[i][j])
+                      '\t', _('based on criteria'), crit[j], '\t with ', G[i][j])
                 # print(frase
-        self.separatore()
+        self.separator()
 
         # stampo la matrice dei giudizi
-        intestazione="\t\t" + crit[0]
+        intestazione = "\t\t" + crit[0]
         for j in range(1, len(G[0])):          # per tutti i criteri
             intestazione += crit[j]
 
         print(intestazione)
 
-
         for i in range(len(G)):
             # numeri = [G[i][j] for j in range(len(G[0])]
-            numeri=[str(G[i][j]) for j in [0, 1, 2, 3]]
+            numeri = [str(G[i][j]) for j in [0, 1, 2, 3]]
             # numeri = ["\t"+str(G[i][j]) for j in [0,1,2,3]]
-            print('\t', opz[i], '\t', "\t\t".join(numeri) ) # join
+            print('\t', opz[i], '\t', "\t\t".join(numeri))  # join
 
         # '\t segun el criterio',crit[j],'\tcon un', G[i][j]
-                # print(frase
-        self.separatore()
+            # print(frase
+        self.separator()
 
     def giudizio_da_matrice(self, C=[[1, 3, 9], [0.33, 1, 6], [1/9, 1/6, 1]]):
         """ attribuisco ad ogni riga i pesi partendo
             dalla matrice di confonto binario C        """
-        C=np.matrix(C)        # trasformo in matrice
+        C = np.matrix(C)        # trasformo in matrice
         C.astype('float')
-        g=C.sum(axis=1)
+        g = C.sum(axis=1)
         return g / sum(g)   # restituisco normalizzato
 
-
-    def risultato(self, opz=['o1', 'o2'], c=['c1', 'c2', 'c3', ], \
-        G=[[5, 8, 2], [1, 9, 3]], C=[[1, 3, 9], [0.33, 1, 6], [1/9, 1/6, 1]],
-        grafico="no", verbose=False):
+    def risultato(self, opz=['o1', 'o2'], c=['c1', 'c2', 'c3', ],
+                  G=[[5, 8, 2], [1, 9, 3]], C=[[1, 3, 9], [0.33, 1, 6], [1/9, 1/6, 1]],
+                  grafico="no", verbose=False):
         """ G i giudizi delle opzioni rispetto ai criteri
             C la matrice di confronto dei criteri
                 a. ottengo i pesi normalizzati dei criteri g_c
@@ -425,16 +422,16 @@ three times which will then appear as ###: '''
         """
         if verbose:
             print("El resultado de la elaboracion ha sido:")
-        g_c=self.giudizio_da_matrice(C)
+        g_c = self.giudizio_da_matrice(C)
 
-        ris=[]        # serve per il grafico
+        ris = []        # serve per il grafico
 
-        R=G * g_c    # {2 · 3} {3·1}      = {2·1}
+        R = G * g_c    # {2 · 3} {3·1}      = {2·1}
         for j in range(len(opz)):
             if verbose:
                 # print("\tLa alternativa ", opz[j], "\ttiene judicio global de", "{:6.4f}".format(
                 print(-("\tthe alternative "), opz[j],
-                 _("\thas a global evaluation of"), "{:6.4f}".format(
+                      _("\thas a global evaluation of"), "{:6.4f}".format(
                     float(R[[j], :])))
 
             # ris.append([opz[j], float(R[[j], :]) )
@@ -443,8 +440,8 @@ three times which will then appear as ###: '''
         if verbose:
             # La alternativa mejor ha resultado
             # "con un judicio de ",
-            print( _("The best option is "), opz[ris.index(max(ris))], \
-               _("with a value of "), "{:6.4f}".format(max(ris)), ".\n\n")
+            print(_("The best option is "), opz[ris.index(max(ris))],
+                  _("with a value of "), "{:6.4f}".format(max(ris)), ".\n\n")
 
         if grafico == "yes":
             plt.bar(range(len(opz)), ris)
@@ -457,10 +454,10 @@ three times which will then appear as ###: '''
             # http://matplotlib.org/examples/ticks_and_spines/ticklabels_demo_rotation.html
             plt.xticks(range(len(opz)), opz, rotation=45)
 
-            value_min=-0.5
-            value_max_x=len(opz)+0.5
-            value_max_y=10.5
-            axes=plt.gca()             # gca stands for 'get current axis'
+            value_min = -0.5
+            value_max_x = len(opz)+0.5
+            value_max_y = 10.5
+            axes = plt.gca()             # gca stands for 'get current axis'
             axes.set_xlim([value_min, value_max_x])
             axes.set_ylim([value_min, value_max_y])
             plt.annotate(text='', xytext=(value_min, 0), xy=(
@@ -471,36 +468,35 @@ three times which will then appear as ###: '''
             plt.show()
 
         #  extract the result as a dictionay -- estraggo il risultato
-        opz_values=dict(zip(opz, ris))
+        opz_values = dict(zip(opz, ris))
         if verbose:
             print(opz_values)
         return opz_values
 
     def computation(self, opz=['o1', 'o2', 'o3', ],
-                         crit=['c1', 'c2', 'c3', 'c4', ],
-                         G=[[10, 9, 8, 7], [9, 8, 7, 6], [8, 7, 6, 5]],
-                         g_c=[[1, 10,  5, 2],
-                                [0.1,  1, 10, 4],
-                                [0.2, .1,  1, 5],
-                                [0.5, .25, .2, 1]],
+                    crit=['c1', 'c2', 'c3', 'c4', ],
+                    G=[[10, 9, 8, 7], [9, 8, 7, 6], [8, 7, 6, 5]],
+                    g_c=[[1, 10,  5, 2],
+                         [0.1,  1, 10, 4],
+                         [0.2, .1,  1, 5],
+                         [0.5, .25, .2, 1]],
                     grafico="no"):          # permetto di eseguire lo script
         """ 
 
         faccio chiedere i valori se lo richiamo come        """
 
-
         if opz == []:
-            opz=self.in_opz()
+            opz = self.in_opz()
         self.equiparo_lunghezze(opz)
         # testo_opz='juzgando la "mejor" entre estas alternativas (opciones):'
-        testo_opz=_('judge the "best" option between the possible ones:')
+        testo_opz = _('judge the "best" option between the possible ones:')
         self.show_opz(opz, testo_opz)
         # self.stop()()
 
         if crit == []:
-            crit=self.in_crit()
+            crit = self.in_crit()
         self.equiparo_lunghezze(crit)
-        testo_crit=_('using these criterias:')
+        testo_crit = _('using these criterias:')
         self.show_opz(crit, testo_crit)
         # self.stop()()
 
@@ -511,13 +507,13 @@ three times which will then appear as ###: '''
             c. infine do il risultato """
         # a.
         if G == []:
-            G=self.giudico_opzioni_in_base_ai_criteri(opz, crit)
+            G = self.giudico_opzioni_in_base_ai_criteri(opz, crit)
         self.show_giudizio_opz_su_crit(opz, crit, G)
         # self.stop()()
 
         # b.
         if g_c == []:
-            g_c=self.confronto_criteri(crit)
+            g_c = self.confronto_criteri(crit)
         self.show_confronto_criteri(crit, g_c)
         # self.stop()()
 
@@ -526,17 +522,17 @@ three times which will then appear as ###: '''
 
         # return
 
+
 # Esecuzione ========================================
 if __name__ == "__main__":
-    a1=ahp()
-    for case in fench_files("choices"):
-        # print(case)
-        # print(type(case))
+    a1 = Ahp()
+    for case in fetch_files("choices"):
+
+        # 
         if not("_CC" in case):
-            v=a1.inpt_from_file(case)
+            v = a1.inpt_from_file(case)
             a1.computation(v[0], v[1], v[2], v[3], grafico="yes")
         else:
             # print("c'è un _CC !!")
             a1.prepara_file(case)
             # prepare file
-

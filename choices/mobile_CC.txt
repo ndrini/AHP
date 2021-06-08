@@ -1,0 +1,12 @@
+[:opz:]
+Samsung Galaxy # latest model
+Oppo C18 # -v 12
+Motolola 14  # green cover
+[/:opz:]
+
+[:crit:]
+dispaly
+cost  # lower is better
+battery  # more is better
+assistance  
+[/:crit:] 

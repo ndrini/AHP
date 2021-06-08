@@ -52,11 +52,15 @@ Here using the Spanish and a pet comparation.
 
 # 4. Use (from zero data)
 To run the AHP process, each case must be saved as a text file in the "choices" directory.
-You can use an already prepared file as pattern.
+You can use an already prepared file as model to copy (ABC.txt and pets.txt).
 
-To use the prepared pattern, you need to supply the list of choices and of the criteria involved in the process, and to call the file the_name_you_want_CC.txt.
+While _choices_ dir contains code that is executed, the *choices_all* dir is considered like a storage for past cases (that won't be executed by the ahp.py script). 
 
-	So, for instance, the file mobile_CC.txt, should contain: 
+
+To use the prepared pattern, you need to supply the list of choices and of the criteria involved in the process, and to *call the file the_name_you_want**_CC**.txt*.
+
+
+So, for instance, if you want to compare some mobile phones, you can create a file called *mobile_CC.txt*, should follow this structure: 
 
 	[:opz:]
 	opz_1  # comment
@@ -70,6 +74,23 @@ To use the prepared pattern, you need to supply the list of choices and of the c
 	crit_3  # comment
 	crit_4  # comment
 	[/:crit:] 
+
+
+following the mobile phones example:
+
+	[:opz:]
+	Samsung Galaxy # latest model
+	Oppo C18 # -v 12
+	Motolola 14  # green cover
+	[/:opz:]
+
+	[:crit:]
+	dispaly
+	cost  # lower is better
+	battery  # more is better
+	assistance  
+	[/:crit:] 
+
 
 To a correct visualization, please, avoid unicode character in variables (they don't matter in comment).
 

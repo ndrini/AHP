@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 
 import ahp
 
-a1 = ahp.ahp()
+a1 = ahp.Ahp()
 HERE = os.path.dirname(os.path.realpath(__file__))
 
 class LearningCase(unittest.TestCase):
