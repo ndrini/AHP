@@ -1,38 +1,49 @@
-## Synopsis
+# 1. Synopsis
 AHP allow the analytic hierarchy process by a python script.
 
-
-## Code Example
+## 1.1 Code Example
 A mathematical, and coherent, translation of human choices is provided.
 
-## Motivation
+## 1.2 Motivation
 Supply to everyone a clear description of the process (with also the motivation), an a visual image of the result. 
 
-
 ## Installation
-The script only needs Python 2 installed.
+Check the presence of Pipfile into the main directory. And run: 
+
+	$ pipenv shell 
+
+then 
+	
+	$ pipenv install 
+
+
 Then, only execute the ahp.py file in the same directory you download the main file:
+
+
 	python ahp.py
-        The folders called choices_all and choices should stay in the same directory too. 
+
+The folders called choices_all and choices should stay in the same directory too. 
+
 
 ## Use
 To run the AHP process, each case must be saved as a text file in the "choices" directory.
 You can use an already prepared file as pattern.
-	To use the prepared pattern, you need to supply the list of choices and of the criteria involved in the process, and to call the file the_name_you_want_CC.txt.
+
+To use the prepared pattern, you need to supply the list of choices and of the criteria involved in the process, and to call the file the_name_you_want_CC.txt.
 
 	So, for instance, the file mobile_CC.txt, should contain: 
 
 	[:opz:]
-	opz_1       # comment
-	opz_2   	# comment
-	opz_3		# comment
+	opz_1  # comment
+	opz_2  # comment
+	opz_3  # comment
 	[/:opz:]
 
 	[:crit:]
-	crit_1 		# comment
-	crit_2
-	crit_3		# comment
-	crit_4      # comment
+	crit_1  # comment
+	crit_2  # comment
+	crit_3  # comment
+	crit_4  # comment
 	[/:crit:] 
 
 To a correct visualization, please, avoid unicode character in variables (they don't matter in comment).

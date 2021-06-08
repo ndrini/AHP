@@ -31,7 +31,8 @@ class LearningCase(unittest.TestCase):
 
     def test_giudizio_da_matrice(self):
         """valuto il giudizio è giusto """
-        self.assertEqual(a1.giudizio_da_matrice([[1, 1., 1], [1, 1, 1], [1, 1, 1]])[2, 0], 1./3)
+        self.assertEqual(a1.giudizio_da_matrice([
+            [1, 1., 1], [1, 1, 1], [1, 1, 1]])[2, 0], 1./3)
         # self.assertEqual(a1.giudizio_da_matrice([[1, 1, 1], [1, 1, 1], [1, 1, 1]])[2, 0], 1./3)
         # errore se input int !!!
 
@@ -79,7 +80,7 @@ class LearningCase(unittest.TestCase):
         # read parameters from file 
         opz, c, G , C = a1.inpt_from_file("pets.txt", c = "/choices_all/")
         dd2 = a1.risultato( opz, c, G, C )
-        self.assertEqual(dd2['gato'],  8.530978982733028)
+        self.assertEqual(dd2['gato'],  8.530978982733027)
 
     def test_read_external_file_(self):
         # Read en external data file 
@@ -145,6 +146,6 @@ def main():
 # Esecuzione ========================================
 if __name__ == "__main__":
     
-    print "Hi"
+    print("Hi")
     main()
-    print "Text not shown"
+    print("Text not shown")

@@ -14,6 +14,6 @@ C3 		 #
 C4       #  
 C5       #  
 C6       #  
-C7       #  less important
+C7       # less important
 [/:crit:]
 
